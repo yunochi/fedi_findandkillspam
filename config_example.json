@@ -1,0 +1,12 @@
+{
+    "Mastodon": false,
+    "Misskey": false,
+
+    "Misskey_ShouldBanUser": false,
+    "Misskey_StreamName": "",
+
+    "Site": "",
+    "ApiKey": "",
+    "badPostTextRegex": [],
+    "badPostQrTextRegex": []
+}

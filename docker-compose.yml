@@ -4,5 +4,5 @@ services:
   killspam:
     build: .
     volumes:
-      - ./config.json:/config/config.json:ro
+      - ./config.json:/workspace/config.json:ro
     restart: unless-stopped
