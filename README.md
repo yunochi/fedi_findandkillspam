@@ -1,84 +1,27 @@
-# fedi_findandkillspam (Rev 9)
-Find and kill those global spam posts.
-
-- ~~misskey only (yet)~~ **Now with Mastodon, too!**
-- ~~100% NOT tested (yet)~~ **Tested, works well!** Big thanks to buttersc.one's really awesome administrators.
-
-## Usage
-1. Install [Deno](https://github.com/denoland/deno/releases)
-2. From any moderator account, create a API access token
-    - See instructions below
-3. Download `start.ts`, `config.json`, and `start.bat` (or `start.sh`)
-    - With auto-update, other files are not required.
-    - `start.bat` is for Windows, `start.sh` is for others.
-4. Configure the script
-    - open the file **config.json**
-    ```jsonc
-    {
-        "Mastodon": false,  // <-- Set this to true, if your instance is Mastodon
-        "Misskey": false,   // <-- Set this to true, if your instance is Misskey
-
-        // In Misskey, should we automatically suspend the user who posted spam post?
-        // If false, we only delete the suspicious note.
-        // (Mastodon does not support deleting toots from API, so we always suspend the user.)
-        "Misskey_ShouldBanUser": false,
-
-        "Site": "https://instancename.example.com/",  // <-- Your instance URL here
-        "ApiKey": "???????"  // <-- Your API access token here (see 2.)
-    }
-    ```
-5. Run `start.sh` or `start.bat` to start the script.
-    - **Automatically fetches and executes latest script from this GitHub repo.**
-    - If you don't want to use auto-update, you can use `local.ts` instead.
-
-### (Misskey) Getting the API access token
-- You must use Misskey API to create a access token with administrative permissions.
-1. Open the AiScript scratchpad (on /scratchpad)
-2. Execute the AiScript below. You'll get the token.
-```
-<: "Token is:"
-<: Mk:api("miauth/gen-token" {
-  session: null,
-  name: 'Fedi_FindAndKillSpam',
-  description: 'github.com/nulta/fedi_findandkillspam',
-  permission: ['read:account', 'write:notes', 'write:admin:suspend-user'],
-}).token
-```
-
-### (Mastodon) Getting the API access token
-1. Settings -> Development -> New Application
-2. Fill out the *Application name* as you like
-3. in *Scopes*, Allow the `read:statuses` and `admin:write:accounts`
-4. Submit, and you'll see *Your access token*.
-
+# fedi_findandkillspam (Yunochi 커스텀)
 
 ## 사용법
-1. [Deno](https://github.com/denoland/deno/releases)를 설치합니다
-2. 모더레이터 권한이 있는 계정에서, API 액세스 토큰을 발급합니다
-    - 아래의 설명을 보세요
-3. `start.ts`, `config.json`, (`start.bat` 또는 `start.sh`)을 내려받습니다
-    - 자동 업데이트를 사용한다면, 나머지 파일들은 필요없습니다. (있어도 문제는 되지 않지만요)
-    - Windows라면 `start.bat`, 리눅스 계통이라면 `start.sh`를 사용합니다.
-    - ![image](https://github.com/nulta/fedi_findandkillspam/assets/35414766/aabaaaf5-9af2-4c8f-9cc1-e1f948b9c969)
-4. 설정을 합니다
+1. 설정을 합니다
     - **config.json**을 열고 값을 수정합니다
     ```jsonc
     {
         "Mastodon": false,  // <-- 마스토돈이라면, true로 설정하세요
         "Misskey": false,   // <-- 미스키라면, true로 설정하세요
-
+        "Misskey_StreamName": "" ,// <-- 미스키의 노트 스트리밍 채널을 변경하려는 경우 설정하세요. (설정하지 않으면 globalTimeline)
         // 미스키에서, 스팸을 올린 사용자를 자동으로 정지할지 정합니다.
         // false일 경우 노트만 삭제하고 사용자를 정지하지는 않습니다.
         // (마스토돈에서는 노트 삭제를 지원하지 않습니다. 그래서 항상 정지합니다.)
+
         "Misskey_ShouldBanUser": true,
+        "badPostTextRegex": [], // <- 스팸 키워드를 정규식으로 설정
+        "badPostQrTextRegex": [], // <- 스팸 QR코드의 내용을 정규식으로 설정
 
         "Site": "https://instancename.example.com/",  // <-- 인스턴스의 주소를 넣으세요
         "ApiKey": "???????"  // <-- API 액세스 토큰을 넣으세요 (아래 설명 참조)
     }
     ```
-5. `start.sh` 또는 `start.bat`을 실행해서 가동합니다.
-    - **자동으로 가장 최신 스크립트를 github에서 받아와 실행합니다.**
-    - 자동 업데이트를 원치 않을 경우, `local.ts`를 대신 사용할 수 있습니다.
+2. `docker compose build` 를 사용하여 빌드 후, `docker compose up -d` 를 사용하여 컨테이너를 실행합니다. 
+3. 로그를 보려면 `docker compose logs` 를 사용합니다. 
 
 ### (Misskey) API 액세스 토큰 얻기
 - 관리자 권한을 사용하려면, 미스키 API를 통해서 토큰을 발급받아야 합니다.
@@ -89,7 +32,7 @@ Find and kill those global spam posts.
 <: Mk:api("miauth/gen-token" {
   session: null,
   name: 'Fedi_FindAndKillSpam',
-  description: 'github.com/nulta/fedi_findandkillspam',
+  description: 'github.com/yunochi/fedi_findandkillspam',
   permission: ['read:account', 'write:notes', 'write:admin:suspend-user'],
 }).token
 ```
@@ -121,3 +64,5 @@ Find and kill those global spam posts.
 **Rev 7부터 미스키에서도 웹소켓을 사용합니다.** 처리 누락되는 노트가 줄어들고 반응시간이 빨라질 것으로 예상합니다.
 
 **Rev 9에서 탐지를 빠져나가는 몇 가지 경우를 수정했습니다.**
+
+**유놋치 커스텀: 포크해서 제가 쓸 기능들 추가하고 이것저것 암튼 함** 므아... 수정 후에 미스키에서만 일단 테스트 되었습니다. 

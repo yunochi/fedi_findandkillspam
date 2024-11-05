@@ -1,0 +1,44 @@
+{
+  "name": "fedi_findandkillspam",
+  "version": "1.0.0",
+  "description": "Find and kill those global spam posts.",
+  "main": "dist/start.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=production node dist/start.js",
+    "start:test": "NODE_ENV=mua node dist/start.js",
+    "build": "tsc -p .",
+    "clean": "rm -rf ./dist",
+    "dev": "nodemon --watch config.json --watch \"src/**/*.ts\" --exec \"ts-node\" src/start.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.14.0",
+    "@types/node": "^22.8.7",
+    "@types/ws": "^8.5.13",
+    "@typescript-eslint/eslint-plugin": "^8.13.0",
+    "@typescript-eslint/parser": "^8.13.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "globals": "^15.12.0",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.13.0"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "jimp": "^1.6.0",
+    "jsqr": "^1.4.0",
+    "qr-scanner": "^1.4.2",
+    "qrcode-decoder": "^0.3.4",
+    "webp-converter": "^2.3.3",
+    "ws": "^8.18.0"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.8"
+  }
+}
