@@ -181,7 +181,7 @@ class ImageChecker {
           // read directly
           image = await Jimp.read(file.uri);
         }
-        image.greyscale().contrast(1);
+        image.greyscale().contrast(0.5);
 
         const data = new Uint8ClampedArray(image.bitmap.data);
         const qr = jsQR(data, image.bitmap.width, image.bitmap.height);
