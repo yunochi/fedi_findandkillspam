@@ -86,7 +86,7 @@ export abstract class FediverseSpamInterceptor {
     if (shouldKill) {
       printMessage(
         `SPAM-KILLED: ${post.postId} from user ${post.user.username}@${post.user.host ?? 'THIS_SERVER'}.`,
-        `Reason: ${checks.reason_string}`,
+        `Reason: ${reason_string}`,
       );
       printMessage(`Content: ${post.text.slice(0, 300).replaceAll('\n', '\\n')}`);
       this.deletePost(post);
