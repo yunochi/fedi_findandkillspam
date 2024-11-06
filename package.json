@@ -33,8 +33,6 @@
     "axios": "^1.7.7",
     "jimp": "^1.6.0",
     "jsqr": "^1.4.0",
-    "qr-scanner": "^1.4.2",
-    "qrcode-decoder": "^0.3.4",
     "webp-converter": "^2.3.3",
     "ws": "^8.18.0"
   },

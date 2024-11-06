@@ -86,7 +86,7 @@ export abstract class FediverseSpamInterceptor {
     if (shouldKill) {
       printMessage(
         `SPAM-KILLED: ${post.postId} from user ${post.user.username}@${post.user.host ?? 'THIS_SERVER'}.`,
-        `Reason: ${reason_string}`,
+        `Reason: Spam Score: ${spamScore}, ${reason_string}`,
       );
       printMessage(`Content: ${post.text.slice(0, 300).replaceAll('\n', '\\n')}`);
       this.deletePost(post);
@@ -181,10 +181,10 @@ class ImageChecker {
           // read directly
           image = await Jimp.read(file.uri);
         }
-        image.greyscale().contrast(0.5);
+        image.greyscale().normalize();
 
         const data = new Uint8ClampedArray(image.bitmap.data);
-        const qr = jsQR(data, image.bitmap.width, image.bitmap.height);
+        const qr = jsQR(data, image.bitmap.width, image.bitmap.height, { inversionAttempts: 'attemptBoth' });
 
         if (!qr) {
           throw new Error(`QR decode Error!`);
